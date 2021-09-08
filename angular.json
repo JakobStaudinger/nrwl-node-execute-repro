@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "projects": {
+    "server1": {
+      "root": ".",
+      "sourceRoot": "apps/server1",
+      "projectType": "application",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@nrwl/node:build",
+          "options": {
+            "outputPath": "dist/server1",
+            "main": "apps/server1/index.ts",
+            "tsConfig": "tsconfig.base.json"
+          }
+        },
+        "serve": {
+          "builder": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "server1:build",
+            "inspect": false
+          }
+        }
+      }
+    },
+    "server2": {
+      "root": ".",
+      "sourceRoot": "apps/server2",
+      "projectType": "application",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@nrwl/node:build",
+          "options": {
+            "outputPath": "dist/server2",
+            "main": "apps/server2/index.ts",
+            "tsConfig": "tsconfig.base.json"
+          }
+        },
+        "serve": {
+          "builder": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "server2:build",
+            "inspect": false
+          }
+        }
+      }
+    },
+    "repro": {
+      "root": ".",
+      "projectType": "application",
+      "schematics": {},
+      "architect": {
+        "test": {
+          "builder": "@angular-devkit/architect:allOf",
+          "options": {
+            "targets": [{ "target": "server1:serve" }, { "target": "server2:serve" }]
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "analytics": false,
+    "defaultCollection": "@nrwl/angular"
+  }
+}
